@@ -1,68 +1,79 @@
-import React from 'react';
+import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
+import "./Login.css";
 
 function Login() {
-    const [email,setEmail] = useState()
-    const [password,setPassword] = useState()
-    const navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    console.log(email);
+    };
+    const handlePassChange = (e) => {
+        setPassword(e.target.value);
+        console.log(password);
+        };
 
-    const handleSubmit = (e) =>{
-        e.preventDefault()
-        axios.post('http://localhost:3001/login', {email,password})
-        .then(result=> {
-            console.log(result)
-            if(result.data==="Success"){
-                navigate('/home')
-            }
-        })
-        .catch(err => console.error(err))
-    }
+  const handleSubmit = (e) => {
+    console.log(email, password);
+    e.preventDefault();
+    axios
+      .post("http://localhost:3001/login", { email, password })
+      .then((result) => {
+        console.log(result);
+        if (result.data === "Success") {
+          navigate("/home");
+        }
+      })
+      .catch((err) => console.error(err));
+  };
 
-    return(
-        <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
-        <div className="bg-white p-3 rounded w-25">
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="email">
-                        <strong>Email</strong>
-                    </label>
-                    <input
-                    type = "text"
-                    placeholder="Enter Email"
-                    autoComplete="off"
-                    name = "email"
-                    className="form-control rounded-0"
-                    onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                
-                <div className="mb-3">
-                    <label htmlFor="password">
-                        <strong>Password</strong>
-                    </label>
-                    <input
-                    type = "password"
-                    placeholder="Enter Password"
-                    autoComplete="off"
-                    name = "password"
-                    className="form-control rounded-0"
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <button type="submit" className="btn btn-success w-100 rounded-0">
-                    Login
-                </button>
-            </form>
-            <p>Don't have an account?</p>
-            <Link to="/signup" className="btn btn-default w-100 bg-light rounded-0 text-decoration-none">
-                Signup
-            </Link>
-        </div>
-        </div>
-    );
+  return (
+    <form className="max-w-sm mx-auto">
+      <div className="mb-5">
+        <label
+          htmlFor="email"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Your email
+        </label>
+        <input
+          type="email"
+          id="email"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="name@flowbite.com"
+          required
+          onChange={handleEmailChange}
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="password"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Your password
+        </label>
+        <input
+          type="password"
+          id="password"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          required
+          onChange={handlePassChange}
+        />
+      </div>
+      
+      <button
+        type="submit"
+        className="gradient-button text-white font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        onClick={handleSubmit}
+      >
+        Submit
+      </button>
+    </form>
+  );
 }
 
 export default Login;
